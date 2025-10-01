@@ -44,7 +44,7 @@ const appData = {
     "cost": 95,
     "price": 100,
     "lossPerPortion": -5,
-    "lossPerMonth": -6000,
+    "monthlyLoss": -6000,
     "orders": 1200,
     "reason": "Трудоемкое приготовление"
   },
