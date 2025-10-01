@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecomendAI</title>
+    <title>DineOptix</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,8 +15,10 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-brand">
-                <div class="logo">🍽️</div>
-                <h1 class="brand-name">RecomendAI</h1>
+                <div class="logo">
+                <img src="do.svg" alt="SmartCanteen" width="32" height="32">
+                </div>
+                <h1 class="brand-name">DineOptix</h1>
             </div>
             
             <ul class="nav-menu">
@@ -120,8 +122,8 @@
                 </div>
                 
                 <div class="chart-card">
-                    <h3>Динамика продаж за 30 дней</h3>
-                    <div class="chart-container" style="position: relative; height: 300px;">
+                    <h3>Топ-5 убыточных позиций</h3>
+                    <div class="chart-contain" style="position: relative; height: 300px;">
                         <canvas id="salesChart"></canvas>
                     </div>
                 </div>
@@ -147,11 +149,6 @@
             
             <div class="menu-grid" id="menuGrid"></div>
             
-            <div class="chart-card">
-                <h3>Матрица популярности vs рентабельности</h3>
-                <div class="chart-container" style="position: relative; height: 400px;">
-                    <canvas id="scatterChart"></canvas>
-                </div>
             </div>
         </section>
 
@@ -265,10 +262,16 @@
                 </div>
                 
                 <div class="settings-card">
+                    <h3>Импорт данных</h3>
+                        <button class="btn btn--primary">Загрузить меню Excel</button>
+                        <button class="btn btn--secondary">Загрузить PDF</button>
+                        <button class="btn btn--outline">Шаблон меню</button>
+                </div>
+  
+                <div class="settings-card">
                     <h3>Экспорт данных</h3>
-                    <button class="btn btn--primary">Скачать отчет Excel</button>
-                    <button class="btn btn--secondary">Экспорт в PDF</button>
-                    <button class="btn btn--outline">API документация</button>
+                        <button class="btn btn--primary">Скачать отчет Excel</button>
+                        <button class="btn btn--secondary">Экспорт в PDF</button>
                 </div>
             </div>
         </section>
