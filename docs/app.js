@@ -20,23 +20,53 @@ const appData = {
       [6, 5, 4, 3, 5, 11, 25, 55, 95, 135, 185, 240, 300, 210, 160, 110, 80, 50, 40, 30, 20, 17, 14, 11],
       [3, 2, 1, 1, 2, 4, 8, 15, 25, 35, 45, 55, 85, 75, 65, 45, 35, 25, 18, 12, 8, 5, 3, 2]
     ],
-    "salesTrend": [
-      {"date": "2025-09-01", "sales": 15200, "orders": 85},
-      {"date": "2025-09-02", "sales": 16800, "orders": 92},
-      {"date": "2025-09-03", "sales": 14500, "orders": 78},
-      {"date": "2025-09-04", "sales": 17200, "orders": 98},
-      {"date": "2025-09-05", "sales": 18900, "orders": 105},
-      {"date": "2025-09-08", "sales": 16200, "orders": 89},
-      {"date": "2025-09-09", "sales": 17800, "orders": 95},
-      {"date": "2025-09-10", "sales": 15800, "orders": 82},
-      {"date": "2025-09-11", "sales": 19200, "orders": 108},
-      {"date": "2025-09-12", "sales": 20100, "orders": 112},
-      {"date": "2025-09-15", "sales": 17500, "orders": 91},
-      {"date": "2025-09-16", "sales": 18200, "orders": 97},
-      {"date": "2025-09-17", "sales": 16900, "orders": 88},
-      {"date": "2025-09-18", "sales": 19800, "orders": 110},
-      {"date": "2025-09-19", "sales": 21200, "orders": 118}
-    ],
+    "topLossMakers": [
+  {
+    "name": "Стейк из лосося",
+    "cost": 420,
+    "price": 480,
+    "lossPerPortion": -60,
+    "monthlyLoss": -12000,
+    "orders": 200,
+    "reason": "Высокая себестоимость, низкая наценка"
+  },
+  {
+    "name": "Салат с креветками",
+    "cost": 180,
+    "price": 200,
+    "lossPerPortion": -20,
+    "monthlyLoss": -8000,
+    "orders": 400,
+    "reason": "Быстрая порча ингредиентов"
+  },
+  {
+    "name": "Тирамису",
+    "cost": 95,
+    "price": 100,
+    "lossPerPortion": -5,
+    "lossPerMonth": -6000,
+    "orders": 1200,
+    "reason": "Трудоемкое приготовление"
+  },
+  {
+    "name": "Суп том-ям",
+    "cost": 110,
+    "price": 120,
+    "lossPerPortion": -10,
+    "monthlyLoss": -5000,
+    "orders": 500,
+    "reason": "Экзотичные дорогие ингредиенты"
+  },
+  {
+    "name": "Говядина по-бургундски",
+    "cost": 280,
+    "price": 300,
+    "lossPerPortion": -20,
+    "monthlyLoss": -4000,
+    "orders": 200,
+    "reason": "Длительное приготовление"
+  }
+],
     "topDishes": [
       {"name": "Борщ украинский", "orders": 156, "change": "+12%", "rating": 4.6, "category": "Первые блюда"},
       {"name": "Куриная котлета с пюре", "orders": 143, "change": "+8%", "rating": 4.4, "category": "Вторые блюда"},
@@ -76,7 +106,7 @@ const appData = {
       {"day": "Пн", "predicted": 195, "confidence": 85, "actual": 188},
       {"day": "Вт", "predicted": 210, "confidence": 88, "actual": 205},
       {"day": "Ср", "predicted": 205, "confidence": 82, "actual": 198},
-      {"day": "Чт", "predicted": 225, "confidence": 90, "actual": 220},
+      {"day": "Чт", "predicted": 280, "confidence": 90, "actual": 220},
       {"day": "Пт", "predicted": 235, "confidence": 87, "actual": 230},
       {"day": "Сб", "predicted": 85, "confidence": 75, "actual": 82},
       {"day": "Вс", "predicted": 45, "confidence": 70, "actual": 48}
@@ -324,7 +354,7 @@ function initCharts() {
   createHeatmapChart();
   
   // Создаем график продаж
-  createSalesChart();
+  createLossMakersChart();
 }
 
 function initChartsForPage(page) {
@@ -408,66 +438,38 @@ function createHeatmapChart() {
   });
 }
 
-function createSalesChart() {
+function createLossMakersChart() {
   const ctx = document.getElementById('salesChart');
   if (!ctx) return;
   
-  const salesData = appData.analytics.salesTrend;
+  const lossMakers = appData.analytics.topLossMakers;
   
-  charts.salesChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: salesData.map(item => {
-        const date = new Date(item.date);
-        return `${date.getDate()}.${date.getMonth() + 1}`;
-      }),
-      datasets: [{
-        label: 'Продажи (₽)',
-        data: salesData.map(item => item.sales),
-        borderColor: '#8b5cf6',
-        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-        tension: 0.4,
-        fill: true,
-        pointBackgroundColor: '#8b5cf6',
-        pointBorderColor: '#ffffff',
-        pointBorderWidth: 2,
-        pointRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return `${context.parsed.y.toLocaleString()} ₽`;
-            }
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: {
-            color: 'rgba(255, 255, 255, 0.1)'
-          }
-        },
-        y: {
-          grid: {
-            color: 'rgba(255, 255, 255, 0.1)'
-          },
-          ticks: {
-            callback: function(value) {
-              return (value / 1000) + 'k₽';
-            }
-          }
-        }
-      }
-    }
-  });
+  // Уничтожаем старый график если есть
+  if (charts.salesChart) {
+    charts.salesChart.destroy();
+  }
+  
+  const container = ctx.parentElement;
+  container.innerHTML = `
+    <div class="loss-makers-list">
+      ${lossMakers.map((item, index) => `
+        <div class="loss-maker-item">
+          <div class="loss-maker-header">
+            <span class="loss-rank">#${index + 1}</span>
+            <span class="loss-name">${item.name}</span>
+            <span class="loss-amount">−${Math.abs(item.monthlyLoss).toLocaleString()}₽/мес</span>
+          </div>
+          <div class="loss-details">
+            <div class="loss-cost">Себестоимость: ${item.cost}₽</div>
+            <div class="loss-price">Цена: ${item.price}₽</div>
+            <div class="loss-per-portion">Убыток/порция: −${Math.abs(item.lossPerPortion)}₽</div>
+            <div class="loss-reason">Причина: ${item.reason}</div>
+            <div class="loss-orders">Заказов: ${item.orders}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
 }
 
 function createScatterChart() {
